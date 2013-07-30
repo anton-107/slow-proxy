@@ -103,6 +103,26 @@ var app = http.createServer(function( req, res ) {
 app.listen(3000);
 ```
 
+
+Proxying binary data such as images
+-----------------------------------
+You can proxy images, using fetch method, by supplying third argument set to true.
+Then you have to add Content-Type and Content-Length headers to your response.
+For example:
+
+```javascript
+app.get(/\/proxyimage\/(\d+)\/(.*)$/, function(request, response) {
+    // Call the `fetch` method
+    proxy.fetch("/" + request.params[1], request.params[0], true, function( data ) {
+
+        response.setHeader("Content-Type", "image/jpeg");
+        response.setHeader("Content-Length", data.length);
+
+        response.end(data, 'binary');
+    });
+});
+```
+
 License
 -------
 
